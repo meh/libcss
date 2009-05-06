@@ -7,7 +7,7 @@ INST_LIBDIR     = /usr/lib
 INST_HEADERSDIR = /usr/include/
 
 DIR     = src
-FILES   = 
+FILES   = ${DIR}/css.o
 HEADERS = 
 
 CC         = gcc
@@ -29,7 +29,7 @@ libcss: $(FILES)
 	${CC} ${LDFLAGS} -dynamiclib -shared -o ${LIB_NAME} ${FILES} -lc
 
 $(FILES): $(FILES:.o=.c)
-	${CC} ${CFLAGS} -fPIC -c $*.c -o $*.lo
+	${CC} ${CFLAGS} -fPIC -c $*.c -o $*.o
 
 install: all
 	mkdir -p ${INST_LIBDIR}
