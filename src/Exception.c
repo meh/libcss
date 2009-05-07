@@ -16,7 +16,23 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_PRIV_H
-#define _LIB_CSS_PRIV_H
+#include "Exception.h"
+#include "common.h"
 
-#endif
+CSSException*
+CSS_NewException (unsigned line, unsigned code)
+{
+    CSSException* exception = (CSSException*) malloc(sizeof(CSSException));
+    exception->line         = line;
+    exception->code         = code;
+    exception->text         = CSSExceptionText[code];
+
+    return exception;
+}
+
+void
+CSS_DestroyException (CSSException* exception)
+{
+    free(exception);
+}
+

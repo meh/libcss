@@ -1,18 +1,19 @@
 NAME    = libcss
 VERSION = 0.0.1
 
-LIB_NAME = "${NAME}-${VERSION}.so"
+LIB_NAME = ${NAME}-${VERSION}.so
 
 INST_LIBDIR     = /usr/lib
 INST_HEADERSDIR = /usr/include/
 
 DIR     = src
-FILES   = ${DIR}/css.o
-HEADERS = 
+INCL	= include
+FILES   = ${DIR}/Document.o ${DIR}/Node.o ${DIR}/NodeList.o ${DIR}/Property.o ${DIR}/PropertyList.o ${DIR}/Exception.o ${DIR}/ExceptionList.o
+HEADERS = ${INCL}/api.h ${INCL}/Document.h ${INCL}/Node.h ${INCL}/NodeList.h ${INCL}/Property.h ${INCL}/PropertyList.h ${INCL}/Exception.h ${INCL}/ExceptionList.h
 
 CC         = gcc
 CXX		   = g++
-CFLAGS     = -D___VERSION___="\"${VERSION}\""
+CFLAGS     = -D___VERSION___="\"${VERSION}\"" -I./include/
 LDFLAGS    = 
 
 ifdef DEBUG

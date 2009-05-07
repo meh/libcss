@@ -16,24 +16,37 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#include "css.h"
-#include "css_priv.h"
-#include <stdio.h>
-#include <string.h>
+#ifndef _LIB_CSS_EXCEPTION_H
+#define _LIB_CSS_EXCEPTION_H
 
-/* Public */
+static char *CSSExceptionText[] = {
 
-CSS*
-CSS_Parse (const char* text, void (*func)(CSSNode*))
-{
+};
 
-}
+/**
+ * Structure that represents an exception.
+ */
+typedef struct _CSSException {
+    unsigned    line; /**< The line number where the exception has been thrown */
+    unsigned    code; /**< The exception code */
+    char*       text; /**< The error text */
+} CSSException;
 
-CSS*
-CSS_ParseFile (const char* path, void (*func)(CSSNode*))
-{
+/**
+ * Create a new CSSException object.
+ *
+ * @param   line    Line where the exception has been thrown.
+ * @param   code    The exception code.
+ *
+ * @return  The new CSSException object.
+ */
+CSSException* CSS_NewException (unsigned line, unsigned code);
 
-}
+/**
+ * Destroy a CSSException object.
+ *
+ * @param   exception   The object to destroy.
+ */
+void CSS_DestroyException (CSSException* exception);
 
-/* Private */
-
+#endif

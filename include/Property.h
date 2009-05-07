@@ -16,41 +16,15 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_H
-#define _LIB_CSS_H
-
-/* Exceptions */
-
-typedef struct _CSSException {
-    unsigned    line;
-    unsigned    code;
-    char*       text;
-} CSSException;
+#ifndef _LIB_CSS_PROPERTY_H
+#define _LIB_CSS_PROPERTY_H
 
 /**
- * Create a new CSSException object.
- *
- * @param   line    Line where the exception has been thrown.
- * @param   code    The exception code.
- *
- * @return  The new CSSException object.
+ * Structure that represents a CSS property (like "width: 43px")
  */
-CSSException* CSS_NewException (unsigned line, unsigned code);
-
-/**
- * Destroy a CSSException object.
- *
- * @param   exception   The object to destroy.
- */
-void          CSS_DestroyException (CSSException* exception);
-
-/* Parser */
-
-/* Property */
-
 typedef struct _CSSProperty {
-    char* name;
-    char* value;
+    char* name;  /**< The property's name */
+    char* value; /**< The property's value */
 } CSSProperty;
 
 /**
@@ -68,45 +42,6 @@ CSSProperty* CSS_NewProperty (const char* name, const char* value);
  *
  * @param   property    The object to destroy.
  */
-void         CSS_DestroyProperty (CSSProperty* property);
-
-/* Node */
-
-typedef struct _CSSNode {
-    char**          selector;
-    unsigned        selectorNumber;
-    CSSProperty**   properties;
-} CSSNode;
-
-/**
- * 
- */
-CSSNode* CSS_NewNode (char** selectors, unsigned number, CSSProperty** properties);
-
-typedef struct _CSS {
-    CSSNode**   content;
-} CSSDocument;
-
-/**
- * Parse a CSS text.
- *
- * @param   text    The CSS to parse.
- * @param   func    The function that gets the CSSNodes, if NULL the return value
- *                  will be a tree of CSSNodes.
- *
- * @return  NULL if func isn't NULL.
- */
-CSSDocument* CSS_Parse (const char* text, void (*func)(CSSNode*));
-
-/**
- * Parse a CSS file.
- *
- * @param   path    The CSS file to parse.
- * @param   func    The function that gets the CSSNodes, if NULL the return value
- *                  will be a tree of CSSNodes.
- *
- * @return  NULL if func isn't NULL.
- */
-CSSDocument* CSS_ParseFile (const char* path, void (*func)(CSSNode*));
+void CSS_DestroyProperty (CSSProperty* property);
 
 #endif
