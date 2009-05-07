@@ -18,3 +18,22 @@
 
 #include "NodeList.h"
 #include "common.h"
+
+CSSNodeList*
+CSS_NewNodeList (CSSNode** nodes, unsigned number)
+{
+    CSSNodeList* nodeList = (CSSNodeList*) malloc(sizeof(CSSNodeList));
+    nodeList->item        = nodes;
+    nodeList->length      = number;
+
+    return nodeList;
+}
+
+void
+CSS_DestroyNodeList (CSSNodeList* list)
+{
+    while (list->length--) {
+        CSS_DestroyNode(list->item[list->length]);
+    }
+    free(list);
+}

@@ -33,7 +33,7 @@ typedef struct _CSSPropertyList {
  * Create a new CSSPropertyList object.
  *
  * @param   properties  Array of properties.
- * @param   Length of the array.
+ * @param   number      Length of the array.
  *
  * @return  The new CSSPropertyList object.
  */

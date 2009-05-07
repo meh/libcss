@@ -33,7 +33,7 @@ void
 CSS_DestroyExceptionList (CSSExceptionList* list)
 {
     while (list->length--) {
-        free(list->item[list->length]);
+        CSS_DestroyProperty(list->item[list->length]);
     }
 
     free(list);

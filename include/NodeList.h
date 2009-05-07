@@ -21,9 +21,29 @@
 
 #include "Node.h"
 
+/**
+ * Structure that representes a CSSProperty list
+ */
 typedef struct _CSSNodeList {
-    CSSNode**   item;
-    unsigned    length;
+    CSSNode**   item;   /**< Array of CSSNode */
+    unsigned    length; /**< Length of the list */>
 } CSSNodeList;
+
+/**
+ * Create a new CSSNodeLits object.
+ *
+ * @param   nodes   Array of nodes.
+ * @param   number  Length of the array.
+ *
+ * @return  The new CSSNodeList object.
+ */
+CSSNodeList* CSS_NewNodeList (CSSNode** nodes, unsigned number);
+
+/**
+ * Destroy a CSSPropertyList object.
+ *
+ * @param   list    The object to destroy.
+ */
+void CSS_DestroyPropertyList (CSSPropertyList* list);
 
 #endif
