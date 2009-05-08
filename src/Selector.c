@@ -16,34 +16,25 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_NODELIST_H
-#define _LIB_CSS_NODELIST_H
+#include "Selector.h"
+#include "common.h"
 
-#include "Node.h"
+CSSSelector*
+CSS_ParseSelector (const char* selector)
+{
+    size_t i;
 
-/**
- * Structure that representes a CSSProperty list
- */
-typedef struct _CSSNodeList {
-    CSSNode**   item;   /**< Array of CSSNode */
-    unsigned    length; /**< Length of the list */
-} CSSNodeList;
+    CSSSelector* newSelector = (CSSSelector*) malloc(sizeof(CSSSelector));
+    newSelector->selectors   = NULL;
+    newSelector->number      = 0;
 
-/**
- * Create a new CSSNodeLits object.
- *
- * @param   nodes   Array of nodes.
- * @param   number  Length of the array.
- *
- * @return  The new CSSNodeList object.
- */
-CSSNodeList* CSS_NewNodeList (CSSNode** nodes, unsigned number);
+    for (i = 0; selector[i] != '\0'; i++) {
+        
+    }
+}
 
-/**
- * Destroy a CSSPropertyList object.
- *
- * @param   list    The object to destroy.
- */
-void CSS_DestroyPropertyList (CSSPropertyList* list);
-
-#endif
+int
+CSS_MatchSelector (const char* selector, xmlNode* node)
+{
+    
+}

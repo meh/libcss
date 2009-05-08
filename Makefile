@@ -24,6 +24,13 @@ ifdef DDEBUG
 CFLAGS += -DDEBUG -g3 -Wall
 endif
 
+ifdef SELECTOR
+CFLAGS  += $(shell xml2-config --cflags)
+LDFLAGS += $(shell xml2-config --libs)
+FILES   += ${DIR}/Selector.o
+HEADERS += ${INCL}/Selector.h
+endif
+
 all: libcss
 
 libcss: $(FILES)
