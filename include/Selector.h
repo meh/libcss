@@ -25,32 +25,25 @@
 #error  "Your libxml2 hasn't tree support."
 #endif
 
-typedef enum {
-    CSSTypeSelector         = 0x01,
-    CSSUniversalSelector    = 0x02,
-    CSSAttributeSelector    = 0x04,
-    CSSIDSelector           = 0x08,
-    CSSClassSelector        = 0x16
-} CSSSelectorType;
+#include "SimpleSelector.h"
 
-#define CSS_SELECTOR_IS_TYPE(selector)      (selector->flags & CSSTypeSelector)
-#define CSS_SELECTOR_IS_UNIVERSAL(selector) (selector->flags & CSSUniversalSelector)
-#define CSS_SELECTOR_IS_ATTRIBUTE(selector) (selector->flags & CSSAttributeSelector)
-#define CSS_SELECTOR_IS_ID(selector)        (selector->flags & CSSIDSelector)
-#define CSS_SELECTOR_IS_CLASS(selector)     (selector->flags & CSSClassSelector)
-
-typedef struct _CSSSimpleSelector {
-    int     flags;
-    char*   type;
-    char*   attribute;
-    char*   id;
-    char*   class;
-} CSSSimpleSelector;
-
+/**
+ * Structure that represents a selector
+ */
 typedef struct _CSSSelector {
-    CSSSimpleSelector** selectors;
-    unsigned            number;
+    CSSSimpleSelector** selectors; /**< array of simple selectors */
+    unsigned            number;    /**< length of the array */
 } CSSSelector;
+
+/**
+ * Create a CSSSelector object.
+ *
+ * @param   selectors   The CSSSimpleSelector array.
+ * @param   number      The length of the array.
+ *
+ * @return  A new CSSSelector object.
+ */
+CSSSelector* CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number);
 
 /**
  * Parse a string to a CSSSelector.

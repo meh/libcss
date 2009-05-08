@@ -16,57 +16,7 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#include "Selector.h"
+#include "SimpleSelector.h"
 #include "common.h"
 
-CSSSelector*
-CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
-{
-    CSSSelector* newSelector = (CSSSelector*) malloc(sizeof(CSSSelector));
-    newSelector->selectors   = selectors;
-    newSelector->number      = number;
 
-    return newSelector;
-}
-
-void
-CSS_DestroySelector (CSSSelector* selector)
-{
-
-}
-
-CSSSelector*
-CSS_ParseSelector (const char* selector)
-{
-    size_t i;
-    size_t length = strlen(selector);
-    char*  check  = strdup(selector);
-
-    CSSSimpleSelector** selectors = NULL;
-    unsigned            number    = 0;
-
-    for (i = 0; i < length; i++) {
-
-    }
-
-    length = strlen(check);
-
-    for (i = 0; i < length; i++) {
-
-    }
-
-    return CSS_NewSelector(selectors, number);
-}
-
-
-int
-CSS_MatchSelector (const CSSSelector* selector, xmlNode* node)
-{
-    
-}
-
-int
-CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
-{
-    
-}

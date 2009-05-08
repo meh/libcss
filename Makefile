@@ -27,8 +27,8 @@ endif
 ifdef SELECTOR
 CFLAGS  += $(shell xml2-config --cflags)
 LDFLAGS += $(shell xml2-config --libs)
-FILES   += ${DIR}/Selector.o
-HEADERS += ${INCL}/Selector.h
+FILES   += ${DIR}/Selector.o ${DIR}/SimpleSelector.o
+HEADERS += ${INCL}/Selector.h ${INCL}/SimpleSelector.h
 endif
 
 all: libcss
@@ -40,11 +40,11 @@ $(FILES): $(FILES:.o=.c)
 	${CC} ${CFLAGS} -fPIC -c $*.c -o $*.o
 
 install: all
-	mkdir -p ${INST_LIBDIR}
-	mkdir -p ${INST_HEADERSDIR}
-###
-	chmod a+rx ${INST_LIBDIR}/${LIB_NAME}
-	chmod a+r ${INST_HEADERSDIR}/css.h
+	mkdir -p         ${INST_LIBDIR}
+	mkdir -p         ${INST_HEADERSDIR}
+	cp    -rf        ${INCL}/* ${INST_HEADERSDIR}/
+	chmod     a+rx   ${INST_LIBDIR}/${LIB_NAME}
+	chmod -R  a+r    ${INST_HEADERSDIR}/
 
 uninstall:
 	rm -f ${INST_LIBDIR}/${LIB_NAME}
