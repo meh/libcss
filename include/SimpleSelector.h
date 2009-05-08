@@ -33,10 +33,33 @@ typedef enum {
  * Structure that represents a CSSAttributeSelector.
  */
 typedef struct _CSSAttribute {
-    int     flags; /**< attribute's type */
+    int     type;  /**< attribute's type */
     char*   name;  /**< attribute's name */
     char*   value; /**< attribute's value */
 } CSSAttribute;
+
+/**
+ * Create a CSSAttribute object.
+ *
+ * The name and value won't be copied, just assigned (so you have to *alloc them)
+ * it's your job to prevent the deletetion of those strings.
+ *
+ * @param   type    The attribute type.
+ * @param   name    The attribute name.
+ * @param   value   The attribute value.
+ *
+ * @return  The new CSSAttribute object.
+ */
+CSSAttribute* CSS_NewAttribute (int type, char* name, char* value);
+
+/**
+ * Destroy a CSSAttribute object.
+ *
+ * The name and value that were passed will be free'd.
+ *
+ * @param   attribute   The object to destroy.
+ */
+void CSS_DestroyAttribute (CSSAttribute* attribute);
 
 typedef enum {
     CSSTypeSelector          = 0x01,
@@ -70,5 +93,37 @@ typedef struct _CSSSimpleSelector {
     char*           pseudoClass;   /**< pseudoClass name */
     char*           pseudoElement; /**< pseudoElement nme */
 } CSSSimpleSelector;
+
+/**
+ * Create a CSSSimpleSelector object.
+ *
+ * All the values have to be *alloc'd by you because the pointers will be
+ * copied as they are.
+ *
+ * @param   flags           Types present in the simple selector in a bitwise manner.
+ * @param   relation        Relationship with the previous simple selector.
+ * @param   type            Value of the type (eg. panel).
+ * @param   attribute       Value of the attribute (eg. [width=34px]).
+ * @param   class           Value of the class (eg. .black).
+ * @param   pseudoClass     Value of the pseudoClass (eg. button:hover).
+ * @param   pseudoElement   Value of the pseudoElement (eg. textarea:first-line).
+ *
+ * @return  The new CSSSimpleSelector.
+ */
+CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation,
+    char*           type,
+    CSSAttribute*   attribute,
+    char*           id,
+    char*           class,
+    char*           pseudoClass,
+    char*           pseudoElement
+);
+
+/**
+ * Destroy a CSSSimpleSelector object.
+ *
+ * @param   selector    The object to destroy.
+ */
+void CSS_DestroySimpleSelector (CSSSimpleSelector* selector);
 
 #endif

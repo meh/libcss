@@ -31,8 +31,8 @@
  * Structure that represents a selector
  */
 typedef struct _CSSSelector {
-    CSSSimpleSelector** selectors; /**< array of simple selectors */
-    unsigned            number;    /**< length of the array */
+    CSSSimpleSelector** item;   /**< array of simple selectors */
+    unsigned            length; /**< length of the array */
 } CSSSelector;
 
 /**

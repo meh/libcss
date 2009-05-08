@@ -29,6 +29,15 @@ CFLAGS  += $(shell xml2-config --cflags)
 LDFLAGS += $(shell xml2-config --libs)
 FILES   += ${DIR}/Selector.o ${DIR}/SimpleSelector.o
 HEADERS += ${INCL}/Selector.h ${INCL}/SimpleSelector.h
+xml_cflags  = $(shell xml2-config --cflags)
+xml_ldflags = $(shell xml2-config --libs)
+$(shell cp  bin/css-config.mk bin/.css-config)
+$(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%#${xml_cflags}#'   bin/.css-config)
+$(shell sed -r -i 's#%SELECTOR_ENABLED_LDFLAGS%#${xml_ldflags}#' bin/.css-config)
+else
+$(shell cp  bin/css-config.mk bin/.css-config)
+$(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%##'  bin/.css-config)
+$(shell sed -r -i 's#%SELECTOR_ENABLED_LDFLAGS%##' bin/.css-config)
 endif
 
 all: libcss
@@ -42,7 +51,8 @@ $(FILES): $(FILES:.o=.c)
 install: all
 	mkdir -p         ${INST_LIBDIR}
 	mkdir -p         ${INST_HEADERSDIR}
-	cp    -rf        ${INCL}/* ${INST_HEADERSDIR}/
+	install          ${HEADERS} ${INST_HEADERSDIR}/
+	mv               bin/.css-config /usr/bin/css-config
 	chmod     a+rx   ${INST_LIBDIR}/${LIB_NAME}
 	chmod -R  a+r    ${INST_HEADERSDIR}/
 

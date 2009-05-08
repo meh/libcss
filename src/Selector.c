@@ -23,8 +23,8 @@ CSSSelector*
 CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
 {
     CSSSelector* newSelector = (CSSSelector*) malloc(sizeof(CSSSelector));
-    newSelector->selectors   = selectors;
-    newSelector->number      = number;
+    newSelector->item        = selectors;
+    newSelector->length      = number;
 
     return newSelector;
 }
@@ -32,7 +32,9 @@ CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
 void
 CSS_DestroySelector (CSSSelector* selector)
 {
-
+    while (selector->length--) {
+        CSS_DestroySimpleSelector(selector->item[selector->length]);
+    }
 }
 
 CSSSelector*

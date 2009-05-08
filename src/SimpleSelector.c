@@ -19,4 +19,67 @@
 #include "SimpleSelector.h"
 #include "common.h"
 
+CSSAttribute*
+CSS_NewAttribute (int type, char* name, char* value)
+{
+    CSSAttribute* attribute = (CSSAttribute*) malloc(sizeof(CSSAttribute));
+    attribute->type         = type;
+    attribute->name         = name;
+    attribute->value        = value;
 
+    return attribute;
+}
+
+void
+CSS_DestroyAttribute (CSSAttribute* attribute)
+{
+    free(attribute->name);
+    free(attribute->value);
+    free(attribute);
+}
+
+CSSSimpleSelector*
+CSS_NewSimpleSelector (int flags, int relation, char* type, CSSAttribute* attribute, char* id, char* class, char* pseudoClass, char* pseudoElement)
+{ 
+    CSSSimpleSelector* selector = (CSSSimpleSelector*) malloc(sizeof(CSSSimpleSelector));
+    selector->flags             = flags;
+    selector->relation          = relation;
+    selector->type              = type;
+    selector->attribute         = attribute;
+    selector->id                = id;
+    selector->class             = class;
+    selector->pseudoClass       = pseudoClass;
+    selector->pseudoElement     = pseudoElement;
+
+    return selector;
+}
+
+void
+CSS_DestroySimpleSelector (CSSSimpleSelector* selector)
+{
+    if (selector->type) {
+        free(selector->type);
+    }
+
+    if (selector->attribute) {
+        CSS_DestroyAttribute(selector->attribute);
+    }
+
+    if (selector->id) {
+        free(selector->id);
+    }
+
+    if (selector->class) {
+        free(selector->class);
+    }
+
+    if (selector->pseudoClass) {
+        free(selector->pseudoClass);
+    }
+
+    if (selector->pseudoElement) {
+        free(selector->pseudoElement);
+    }
+
+    free(selector);
+}
