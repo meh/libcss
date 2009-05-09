@@ -13,8 +13,8 @@ Usage: css-config [OPTION]
 
 Known values for OPTION are:
 
-  --prefix=DIR		change libxml prefix [default $prefix]
-  --exec-prefix=DIR	change libxml exec prefix [default $exec_prefix]
+  --prefix=DIR		change libcss prefix [default $prefix]
+  --exec-prefix=DIR	change libcss exec prefix [default $exec_prefix]
   --libs		print library linking information
   --cflags		print pre-processor and compiler flags
   --modules		module support enabled

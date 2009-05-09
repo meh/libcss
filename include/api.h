@@ -27,4 +27,9 @@
 #include "NodeList.h"
 #include "Document.h"
 
+#ifdef CSS_SELECTOR
+#include "Selector.h"
+#include "SimpleSelector.h"
+#endif
+
 #endif

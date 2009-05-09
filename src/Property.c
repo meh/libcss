@@ -20,11 +20,12 @@
 #include "common.h"
 
 CSSProperty*
-CSS_NewProperty (const char* name, const char* value)
+CSS_NewProperty (const char* name, const char* value, int important)
 {
     CSSProperty* property = (CSSProperty*) malloc(sizeof(CSSProperty));
     property->name        = strdup(name);
     property->value       = strdup(value);
+    property->important   = important;
 
     return property;
 }

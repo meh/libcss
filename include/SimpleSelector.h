@@ -67,8 +67,7 @@ typedef enum {
     CSSAttributeSelector     = 0x04,
     CSSIDSelector            = 0x08,
     CSSClassSelector         = 0x16,
-    CSSPseudoClassSelector   = 0x32,
-    CSSPseudoElementSelector = 0x64
+    CSSPseudoSelector        = 0x32
 } CSSSelectorType;
 
 #define CSS_SELECTOR_IS_TYPE(selector)          (selector->flags & CSSTypeSelector)
@@ -76,22 +75,20 @@ typedef enum {
 #define CSS_SELECTOR_IS_ATTRIBUTE(selector)     (selector->flags & CSSAttributeSelector)
 #define CSS_SELECTOR_IS_ID(selector)            (selector->flags & CSSIDSelector)
 #define CSS_SELECTOR_IS_CLASS(selector)         (selector->flags & CSSClassSelector)
-#define CSS_SELECTOR_IS_PSEUDOCLASS(selector)   (selector->flags & CSSPseudoClassSelector)
-#define CSS_SELECTOR_IS_PSEUDOELEMENT(selector) (selector->flags & CSSPseudoElementSelector)
+#define CSS_SELECTOR_IS_PSEUDO(selector)        (selector->flags & CSSPseudoSelector)
 
 /**
  * Structure that represents a simple selector
  * (see http://www.w3.org/TR/CSS2/selector.html#selector-syntax)
  */
 typedef struct _CSSSimpleSelector {
-    int             flags;         /**< simple selector type */
-    int             relation;      /**< relationship with the parent simple selector */
-    char*           type;          /**< type value */
-    CSSAttribute*   attribute;     /**< attribute value */
-    char*           id;            /**< id name */
-    char*           class;         /**< class name */
-    char*           pseudoClass;   /**< pseudoClass name */
-    char*           pseudoElement; /**< pseudoElement nme */
+    int             flags;     /**< simple selector type */
+    int             relation;  /**< relationship with the parent simple selector */
+    char*           type;      /**< type value */
+    CSSAttribute*   attribute; /**< attribute value */
+    char*           id;        /**< id name */
+    char*           class;     /**< class name */
+    char*           pseudo;    /**< pseudo name */
 } CSSSimpleSelector;
 
 /**

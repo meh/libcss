@@ -50,7 +50,7 @@ CSSSelector* CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number);
  *
  * @param   selector    The string.
  *
- * @return  The CSSSelector.
+ * @return  The CSSSelector or NULL on error.
  */
 CSSSelector* CSS_ParseSelector (const char* selector);
 

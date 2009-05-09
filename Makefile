@@ -4,7 +4,7 @@ VERSION = 0.0.1
 LIB_NAME = ${NAME}-${VERSION}.so
 
 INST_LIBDIR     = /usr/lib
-INST_HEADERSDIR = /usr/include/
+INST_HEADERSDIR = /usr/include/css
 
 DIR     = src
 INCL	= include
@@ -32,7 +32,7 @@ HEADERS += ${INCL}/Selector.h ${INCL}/SimpleSelector.h
 xml_cflags  = $(shell xml2-config --cflags)
 xml_ldflags = $(shell xml2-config --libs)
 $(shell cp  bin/css-config.mk bin/.css-config)
-$(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%#${xml_cflags}#'   bin/.css-config)
+$(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%#${xml_cflags} -DCSS_SELECTOR=1#'   bin/.css-config)
 $(shell sed -r -i 's#%SELECTOR_ENABLED_LDFLAGS%#${xml_ldflags}#' bin/.css-config)
 else
 $(shell cp  bin/css-config.mk bin/.css-config)
@@ -53,6 +53,7 @@ install: all
 	mkdir -p         ${INST_HEADERSDIR}
 	install          ${HEADERS} ${INST_HEADERSDIR}/
 	mv               bin/.css-config /usr/bin/css-config
+	cp    			 ${LIB_NAME} ${INST_LIBDIR}/
 	chmod     a+rx   ${INST_LIBDIR}/${LIB_NAME}
 	chmod -R  a+r    ${INST_HEADERSDIR}/
 

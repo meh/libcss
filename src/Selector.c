@@ -40,24 +40,33 @@ CSS_DestroySelector (CSSSelector* selector)
 CSSSelector*
 CSS_ParseSelector (const char* selector)
 {
-    size_t i;
-    size_t length = strlen(selector);
-    char*  check  = strdup(selector);
+    size_t i, offset;
+    size_t length   = strlen(selector);
+    int    inString = 0;
+    int    flag     = 0;
 
-    CSSSimpleSelector** selectors = NULL;
-    unsigned            number    = 0;
+    CSSSimpleSelector source = {0, 0, NULL, NULL, NULL, NULL, NULL, NULL};
+    CSSSelector*      parsed = CSS_NewSelector(NULL, 0);
 
-    for (i = 0; i < length; i++) {
-
+    for (i = 0, offset = 0; i < length; i++) {
+        if (selector[i] == '.') {
+            flag = CSSClassSelector;
+        }
+        else if (selector[i] == '#') {
+            flag = CSSIDSelector;
+        }
+        else if (selector[i] == '[') {
+            flag = CSSAttributeSelector;
+        }
+        else if (selector[i] == '*') {
+            source.flags |= CSSUniversalSelector;
+        }
+        else {
+            
+        }
     }
 
-    length = strlen(check);
-
-    for (i = 0; i < length; i++) {
-
-    }
-
-    return CSS_NewSelector(selectors, number);
+    return parsed;
 }
 
 

@@ -23,8 +23,9 @@
  * Structure that represents a CSS property (like "width: 43px")
  */
 typedef struct _CSSProperty {
-    char* name;  /**< The property's name */
-    char* value; /**< The property's value */
+    int   important; /**< The property's importance */
+    char* name;      /**< The property's name */
+    char* value;     /**< The property's value */
 } CSSProperty;
 
 /**
@@ -35,7 +36,7 @@ typedef struct _CSSProperty {
  *
  * @return  A new CSSProperty object.
  */
-CSSProperty* CSS_NewProperty (const char* name, const char* value);
+CSSProperty* CSS_NewProperty (const char* name, const char* value, int important);
 
 /**
  * Destroy a CSSProperty object.
