@@ -37,17 +37,24 @@ CSS_ParseTreeExpression (const char* expression)
 
     // if the string ended throw error
     if (i == length) {
-        goto tree_expression_parse_error;
+        treeExpression->base   = 0;
+        treeExpression->offset = 0;
+        return treeExpression;
     }
 
     // check that the next char is accepted
     if (expression[i] != '+' && expression[i] != '-' && expression[i] != 'n' && !isdigit(expression[i])) {
-        goto tree_expression_parse_error;
+        free(treeExpression);
+        return NULL;
     }
 
+    // check that there's a n
+    for (h = i; h < length && expression[h] != 'n'; h++);
+
     // set the right value
-    if (expression[i] != 'n') {
-        if (i+2 < length && expression[i+1] == 'n') {
+    if (h < length) {
+        // if there's just a sign put 1 or -1
+        if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
                 treeExpression->base = 1;
             }
@@ -56,11 +63,17 @@ CSS_ParseTreeExpression (const char* expression)
             }
         }
         else {
-            treeExpression->base = atoi(&expression[i]);
+            // if it's just n put 1, else convert the string
+            treeExpression->base = (expression[i] == 'n')
+                ? 1
+                : atoi(&expression[i]);
         }
+
+        for (; i < length && expression[i] != 'n'; i++);
+        i++;
     }
     else {
-        treeExpression->base = 1;
+        treeExpression->base = 0;
     }
 
     // clean spaces
@@ -71,29 +84,26 @@ CSS_ParseTreeExpression (const char* expression)
     // if the string ended the offset is 0, return the tree expression
     if (i == length) {
         treeExpression->offset = 0;
-        goto tree_expression_parse_end;
+        return treeExpression;
     }
 
     // if there's no + or - throw an error
-    if (!(expression[i] == '+' || expression[i] == '-')) {
-        goto tree_expression_parse_error;
+    if (expression[i] != '+' && expression[i] != '-' && !isdigit(expression[i])) {
+        free(treeExpression);
+        return NULL;
     }
 
     // check that the other chars are digits
     for (h = i+1; h < length && (isdigit(expression[h]) || expression[h] == ' '); h++);
 
     if (h < length) {
-        goto tree_expression_parse_error;
+        free(treeExpression);
+        return NULL;
     }
 
     treeExpression->offset = atoi(&expression[i]);
 
-tree_expression_parse_end:
     return treeExpression;
-
-tree_expression_parse_error:
-    free(treeExpression);
-    return NULL;
 }
 
 CSSPseudoClass*
@@ -114,7 +124,7 @@ CSS_DestroyPseudoClass (CSSPseudoClass* pseudoClass)
 
     if (pseudoClass->value) {
         if (CSS_PSEUDOCLASS_IS_TREE(pseudoClass)) {
-            CSS_DestroyTreeExpression(pseudoClass->value);
+            free(pseudoClass->value);
         }
         else if (CSS_PSEUDOCLASS_IS_NOT(pseudoClass)) {
             CSS_DestroySimpleSelector(pseudoClass->value);

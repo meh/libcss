@@ -22,7 +22,7 @@
 #include "PropertyList.h"
 
 #ifdef  CSS_SELECTOR
-#include "Selector.h"
+#include "selector/Selector.h"
 
 #define CSS_SELECTOR_TYPE CSSSelector
 #else

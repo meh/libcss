@@ -68,7 +68,7 @@ while test $# -gt 0; do
 	;;
 
     --cflags)
-       	echo -I${includedir}/css %SELECTOR_ENABLED_CFLAGS%
+       	echo -I${includedir} %SELECTOR_ENABLED_CFLAGS%
        	;;
 
     --modules)
