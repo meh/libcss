@@ -16,45 +16,19 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_NODE_H
-#define _LIB_CSS_NODE_H
+#ifndef _LIB_CSS_SELECTOR_PSEUDOCLASS_H
+#define _LIB_CSS_SELECTOR_PSEUDOCLASS_H
 
-#include "PropertyList.h"
+typedef enum {
+    CSSNormalPseudoClass = 0x01,
+    CSSTreePseudoClass   = 0x02,
+    CSSNotPseudoClass    = 0x04
+} CSSPseudoClassType;
 
-#ifdef  CSS_SELECTOR
-#include "Selector.h"
-
-#define CSS_SELECTOR_TYPE CSSSelector
-#else
-#define CSS_SELECTOR_TYPE char
-#endif
-
-/**
- * Structure that represents a CSS node (a new selectors properties)
- */
-typedef struct _CSSNode {
-    CSS_SELECTOR_TYPE** selector;       /**< Selectors array */
-    unsigned            selectorNumber; /**< Number of selectors */
-    CSSPropertyList*    properties;     /**< Selectors' properties */
-} CSSNode;
-
-/**
- * Create a new CSSNode object.
- *
- * @param   selectors   Array of selectors.
- * @param   number      Number of selectors.
- * @param   properties  List of properties.
- *
- * @return  A new CSSNode object.
- */
-
-CSSNode* CSS_NewNode (CSS_SELECTOR_TYPE** selectors, unsigned number, CSSPropertyList* properties);
-
-/**
- * Destroy a CSSNode object.
- *
- * @param   node    The object to destroy.
- */
-void CSS_DestroyNode (CSSNode* node);
+typedef struct _CSSPseudoClass {
+    CSSPseudoClassType type;
+    char*              name;
+    void*              value;
+} CSSPseudoClass;
 
 #endif

@@ -16,45 +16,52 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_NODE_H
-#define _LIB_CSS_NODE_H
-
-#include "PropertyList.h"
-
-#ifdef  CSS_SELECTOR
-#include "Selector.h"
-
-#define CSS_SELECTOR_TYPE CSSSelector
-#else
-#define CSS_SELECTOR_TYPE char
-#endif
+#ifndef _LIB_CSS_SELECTOR_ATTRIBUTE_H
+#define _LIB_CSS_SELECTOR_ATTRIBUTE_H
 
 /**
- * Structure that represents a CSS node (a new selectors properties)
+ * CSSAttribute types.
  */
-typedef struct _CSSNode {
-    CSS_SELECTOR_TYPE** selector;       /**< Selectors array */
-    unsigned            selectorNumber; /**< Number of selectors */
-    CSSPropertyList*    properties;     /**< Selectors' properties */
-} CSSNode;
+typedef enum {
+    CSSAttributePresent    = 0x01, /**< [att] */
+    CSSAttributeExactly    = 0x02, /**< [att=val] */
+    CSSAttributeIn         = 0x04, /**< [att~=val] */
+    CSSAttributeStartsWith = 0x08, /**< [att^=val] */
+    CSSAttributeEndsWith   = 0x16, /**< [att$=val] */
+    CSSAttributeContains   = 0x32, /**< [att*=val] */
+    CSSAttributeBeginsWith = 0x64  /**< [att|=val] */
+} CSSAttributeType;
 
 /**
- * Create a new CSSNode object.
- *
- * @param   selectors   Array of selectors.
- * @param   number      Number of selectors.
- * @param   properties  List of properties.
- *
- * @return  A new CSSNode object.
+ * Structure that represents a CSSAttributeSelector.
  */
-
-CSSNode* CSS_NewNode (CSS_SELECTOR_TYPE** selectors, unsigned number, CSSPropertyList* properties);
+typedef struct _CSSAttribute {
+    int     type;  /**< attribute's type */
+    char*   name;  /**< attribute's name */
+    char*   value; /**< attribute's value */
+} CSSAttribute;
 
 /**
- * Destroy a CSSNode object.
+ * Create a CSSAttribute object.
  *
- * @param   node    The object to destroy.
+ * The name and value won't be copied, just assigned (so you have to *alloc them)
+ * it's your job to prevent the deletetion of those strings.
+ *
+ * @param   type    The attribute type.
+ * @param   name    The attribute name.
+ * @param   value   The attribute value.
+ *
+ * @return  The new CSSAttribute object.
  */
-void CSS_DestroyNode (CSSNode* node);
+CSSAttribute* CSS_NewAttribute (int type, char* name, char* value);
+
+/**
+ * Destroy a CSSAttribute object.
+ *
+ * The name and value that were passed will be free'd.
+ *
+ * @param   attribute   The object to destroy.
+ */
+void CSS_DestroyAttribute (CSSAttribute* attribute);
 
 #endif

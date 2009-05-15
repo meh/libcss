@@ -16,68 +16,25 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#include "Selector.h"
+#include "selector/Attribute.h"
 #include "common.h"
 
-CSSSelector*
-CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
+CSSAttribute*
+CSS_NewAttribute (int type, char* name, char* value)
 {
-    CSSSelector* newSelector = (CSSSelector*) malloc(sizeof(CSSSelector));
-    newSelector->item        = selectors;
-    newSelector->length      = number;
+    CSSAttribute* attribute = (CSSAttribute*) malloc(sizeof(CSSAttribute));
+    attribute->type         = type;
+    attribute->name         = name;
+    attribute->value        = value;
 
-    return newSelector;
+    return attribute;
 }
 
 void
-CSS_DestroySelector (CSSSelector* selector)
+CSS_DestroyAttribute (CSSAttribute* attribute)
 {
-    while (selector->length--) {
-        CSS_DestroySimpleSelector(selector->item[selector->length]);
-    }
+    free(attribute->name);
+    free(attribute->value);
+    free(attribute);
 }
 
-CSSSelector*
-CSS_ParseSelector (const char* selector)
-{
-    size_t i, offset;
-    size_t length   = strlen(selector);
-    int    inString = 0;
-    int    flag     = 0;
-
-    CSSSimpleSelector source = {0, 0, NULL, NULL, NULL, NULL, NULL, NULL};
-    CSSSelector*      parsed = CSS_NewSelector(NULL, 0);
-
-    for (i = 0, offset = 0; i < length; i++) {
-        if (selector[i] == '.') {
-            flag = CSSClassSelector;
-        }
-        else if (selector[i] == '#') {
-            flag = CSSIDSelector;
-        }
-        else if (selector[i] == '[') {
-            flag = CSSAttributeSelector;
-        }
-        else if (selector[i] == '*') {
-            source.flags |= CSSUniversalSelector;
-        }
-        else {
-            
-        }
-    }
-
-    return parsed;
-}
-
-
-int
-CSS_MatchSelector (const CSSSelector* selector, xmlNode* node)
-{
-    
-}
-
-int
-CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
-{
-    
-}

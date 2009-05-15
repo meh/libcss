@@ -16,30 +16,11 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#include "SimpleSelector.h"
+#include "selector/SimpleSelector.h"
 #include "common.h"
 
-CSSAttribute*
-CSS_NewAttribute (int type, char* name, char* value)
-{
-    CSSAttribute* attribute = (CSSAttribute*) malloc(sizeof(CSSAttribute));
-    attribute->type         = type;
-    attribute->name         = name;
-    attribute->value        = value;
-
-    return attribute;
-}
-
-void
-CSS_DestroyAttribute (CSSAttribute* attribute)
-{
-    free(attribute->name);
-    free(attribute->value);
-    free(attribute);
-}
-
 CSSSimpleSelector*
-CSS_NewSimpleSelector (int flags, int relation, char* type, CSSAttribute* attribute, char* id, char* class, char* pseudoClass, char* pseudoElement)
+CSS_NewSimpleSelector (int flags, int relation, char* type, CSSAttribute* attribute, char* id, char* class, CSSPseudoClass** pseudoClass, char* pseudoElement)
 { 
     CSSSimpleSelector* selector = (CSSSimpleSelector*) malloc(sizeof(CSSSimpleSelector));
     selector->flags             = flags;
@@ -74,7 +55,9 @@ CSS_DestroySimpleSelector (CSSSimpleSelector* selector)
     }
 
     if (selector->pseudoClass) {
-        free(selector->pseudoClass);
+        while (selector->pseudoClass++) {
+            CSS_DestroyPseudoClass(*selector->pseudoClass);
+        }
     }
 
     if (selector->pseudoElement) {

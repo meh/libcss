@@ -16,62 +16,12 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_SELECTOR_H
-#define _LIB_CSS_SELECTOR_H
+#ifndef _LIB_CSS_SELECTOR_API_H
+#define _LIB_CSS_SELECTOR_API_H
 
-#include "libxml/tree.h"
-
-#ifndef LIBXML_TREE_ENABLED
-#error  "Your libxml2 hasn't tree support."
-#endif
-
+#include "PseudoClass.h"
+#include "Attribute.h"
 #include "SimpleSelector.h"
-
-/**
- * Structure that represents a selector
- */
-typedef struct _CSSSelector {
-    CSSSimpleSelector** item;   /**< array of simple selectors */
-    unsigned            length; /**< length of the array */
-} CSSSelector;
-
-/**
- * Create a CSSSelector object.
- *
- * @param   selectors   The CSSSimpleSelector array.
- * @param   number      The length of the array.
- *
- * @return  A new CSSSelector object.
- */
-CSSSelector* CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number);
-
-/**
- * Parse a string to a CSSSelector.
- *
- * @param   selector    The string.
- *
- * @return  The CSSSelector or NULL on error.
- */
-CSSSelector* CSS_ParseSelector (const char* selector);
-
-/**
- * Match a selector against a xml node.
- *
- * @param   selector    The CSSSelector.
- * @param   node        The xmlNode
- *
- * @return  1 if it matches, 0 otherwise.
- */
-int CSS_MatchSelector (const CSSSelector* selector, xmlNode* node);
-
-/**
- * Match a string selector against an xml node.
- *
- * @param   selector    The selector string.
- * @param   node        The xmlNode.
- *
- * @return  1 if it matches, 0 otherwise.
- */
-int CSS_MatchSelectorFromString (const char* selector, xmlNode* node);
+#include "Selector.h"
 
 #endif

@@ -1,7 +1,7 @@
 NAME    = libcss
 VERSION = 0.0.1
 
-LIB_NAME = ${NAME}-${VERSION}.so
+LIB_NAME = ${NAME}.so.${VERSION}
 
 INST_LIBDIR     = /usr/lib
 INST_HEADERSDIR = /usr/include/css
@@ -13,7 +13,7 @@ HEADERS = ${INCL}/api.h ${INCL}/Document.h ${INCL}/Node.h ${INCL}/NodeList.h ${I
 
 CC         = gcc
 CXX		   = g++
-CFLAGS     = -D___VERSION___="\"${VERSION}\"" -I./include/
+CFLAGS     = -D___VERSION___="\"${VERSION}\"" -I./include/ -I./src/
 LDFLAGS    = 
 
 ifdef DEBUG
@@ -27,15 +27,15 @@ endif
 ifdef SELECTOR
 CFLAGS  += $(shell xml2-config --cflags)
 LDFLAGS += $(shell xml2-config --libs)
-FILES   += ${DIR}/Selector.o ${DIR}/SimpleSelector.o
-HEADERS += ${INCL}/Selector.h ${INCL}/SimpleSelector.h
+FILES   += ${DIR}/selector/Selector.o ${DIR}/selector/SimpleSelector.o ${DIR}/selector/Attribute.o ${DIR}/selector/PseudoClass.o
+HEADERS += ${INCL}/selector/Selector.h ${INCL}/selector/SimpleSelector.h ${INCL}/selector/Attribute.h ${INCL}/selector/PseudoClass.h
 xml_cflags  = $(shell xml2-config --cflags)
 xml_ldflags = $(shell xml2-config --libs)
-$(shell cp  bin/css-config.mk bin/.css-config)
+$(shell cp -f bin/css-config.mk bin/.css-config)
 $(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%#${xml_cflags} -DCSS_SELECTOR=1#'   bin/.css-config)
 $(shell sed -r -i 's#%SELECTOR_ENABLED_LDFLAGS%#${xml_ldflags}#' bin/.css-config)
 else
-$(shell cp  bin/css-config.mk bin/.css-config)
+$(shell cp -f bin/css-config.mk bin/.css-config)
 $(shell sed -r -i 's#%SELECTOR_ENABLED_CFLAGS%##'  bin/.css-config)
 $(shell sed -r -i 's#%SELECTOR_ENABLED_LDFLAGS%##' bin/.css-config)
 endif

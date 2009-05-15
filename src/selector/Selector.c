@@ -16,31 +16,68 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#include "Node.h"
+#include "selector/Selector.h"
 #include "common.h"
 
-CSSNode*
-CSS_NewNode (CSS_SELECTOR_TYPE** selectors, unsigned number, CSSPropertyList* properties)
+CSSSelector*
+CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
 {
-    CSSNode* node        = (CSSNode*) malloc(sizeof(CSSNode));
-    node->selector       = selectors;
-    node->selectorNumber = number;
-    node->properties     = properties;
+    CSSSelector* newSelector = (CSSSelector*) malloc(sizeof(CSSSelector));
+    newSelector->item        = selectors;
+    newSelector->length      = number;
 
-    return node;
+    return newSelector;
 }
 
 void
-CSS_DestroyNode (CSSNode* node)
+CSS_DestroySelector (CSSSelector* selector)
 {
-    while (node->selectorNumber--) {
-        #ifdef CSS_SELECTOR
-        CSS_DestroySelector(node->selector[node->selectorNumber]);
-        #else
-        free(node->selector[node->selectorNumber]);
-        #endif
+    while (selector->length--) {
+        CSS_DestroySimpleSelector(selector->item[selector->length]);
     }
-    CSS_DestroyPropertyList(node->properties);
-    free(node);
 }
 
+CSSSelector*
+CSS_ParseSelector (const char* selector)
+{
+    size_t i, offset;
+    size_t length   = strlen(selector);
+    int    inString = 0;
+    int    flag     = 0;
+
+    CSSSimpleSelector source = {0, 0, NULL, NULL, NULL, NULL, NULL, NULL};
+    CSSSelector*      parsed = CSS_NewSelector(NULL, 0);
+
+    for (i = 0, offset = 0; i < length; i++) {
+        if (selector[i] == '.') {
+            flag = CSSClassSelector;
+        }
+        else if (selector[i] == '#') {
+            flag = CSSIDSelector;
+        }
+        else if (selector[i] == '[') {
+            flag = CSSAttributeSelector;
+        }
+        else if (selector[i] == '*') {
+            source.flags |= CSSUniversalSelector;
+        }
+        else {
+            
+        }
+    }
+
+    return parsed;
+}
+
+
+int
+CSS_MatchSelector (const CSSSelector* selector, xmlNode* node)
+{
+    
+}
+
+int
+CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
+{
+    
+}

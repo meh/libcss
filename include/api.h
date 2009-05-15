@@ -28,8 +28,7 @@
 #include "Document.h"
 
 #ifdef CSS_SELECTOR
-#include "Selector.h"
-#include "SimpleSelector.h"
+#include "selector/api.h"
 #endif
 
 #endif
