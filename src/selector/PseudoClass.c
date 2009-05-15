@@ -52,9 +52,9 @@ CSS_ParseTreeExpression (const char* expression)
     for (h = i; h < length && expression[h] != 'n'; h++);
 
     // check that there are only digits between i and the n
-    for (j = (expression[i] == '+' || expression[i] == '-') ? i+1 : i; j < h-1 && isdigit(expression[j]); j++);
+    for (j = (expression[i] == '+' || expression[i] == '-') ? i+1 : i; j < h && isdigit(expression[j]); j++);
 
-    if (j == h) {
+    if (j != h) {
         free(treeExpression);
         return NULL;
     }
