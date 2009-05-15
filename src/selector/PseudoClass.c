@@ -27,15 +27,14 @@ CSS_ParseTreeExpression (const char* expression)
     CSSTreeExpression* treeExpression = (CSSTreeExpression*) malloc(sizeof(CSSTreeExpression));
 
     size_t length = strlen(expression);
-    size_t i      = 0;
+    size_t i;
     size_t h;
+    char   positive;
     
     // clean spaces
-    while (i < length && expression[i] == ' ') {
-        i++;
-    }
+    for (i = 0; i < length && expression[i] == ' '; i++);
 
-    // if the string ended throw error
+    // if the string ended it's 0
     if (i == length) {
         treeExpression->base   = 0;
         treeExpression->offset = 0;
@@ -77,9 +76,7 @@ CSS_ParseTreeExpression (const char* expression)
     }
 
     // clean spaces
-    while (i < length && expression[i] == ' ') {
-        i++;
-    }
+    while (i < length && expression[i] == ' ') i++;
 
     // if the string ended the offset is 0, return the tree expression
     if (i == length) {
@@ -88,20 +85,27 @@ CSS_ParseTreeExpression (const char* expression)
     }
 
     // if there's no + or - throw an error
-    if (expression[i] != '+' && expression[i] != '-' && !isdigit(expression[i])) {
+    if (expression[i] != '+' && expression[i] != '-') {
         free(treeExpression);
         return NULL;
     }
 
-    // check that the other chars are digits
-    for (h = i+1; h < length && (isdigit(expression[h]) || expression[h] == ' '); h++);
+    positive = (expression[i] == '+') ? 1 : -1;
+    i++;
+
+    // clean spaces
+    while (i < length && expression[i] == ' ') i++;
+
+    // check that the other chars are digits and could end with spaces
+    for (h = i+1; h < length && isdigit(expression[h]); h++);
+    for (; h < length && expression[h] == ' '; h++);
 
     if (h < length) {
         free(treeExpression);
         return NULL;
     }
 
-    treeExpression->offset = atoi(&expression[i]);
+    treeExpression->offset = positive * atoi(&expression[i]);
 
     return treeExpression;
 }
