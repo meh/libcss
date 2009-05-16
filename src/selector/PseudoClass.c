@@ -70,7 +70,7 @@ CSS_ParseTreeExpression (const char* expression)
     }
 
     // set the right value
-    if (h > 1 && h < length) {
+    if (h < length) {
         // if there's just a sign put 1 or -1
         if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
