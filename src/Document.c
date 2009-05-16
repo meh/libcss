@@ -22,12 +22,12 @@
 CSSDocument*
 CSS_Parse (const char* text, void (*func)(CSSNode*))
 {
-
+    return NULL;
 }
 
 CSSDocument*
 CSS_ParseFile (const char* path, void (*func)(CSSNode*))
 {
-
+    return NULL;
 }
 

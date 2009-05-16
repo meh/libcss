@@ -33,45 +33,80 @@ CSS_ParseTreeExpression (const char* expression)
     char   positive;
 
     if (expression == NULL) {
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
 
     length = strlen(expression);
     
     if (length == 0) {
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
     
-    // clean spaces
+    /* clean spaces */
     for (i = 0; i < length && expression[i] == ' '; i++);
+    h = i;
 
-    // if the string ended it's 0
+    if (strstr(&expression[h], "even") == &expression[h]) {
+        h += 4;
+
+        /* clean spaces */
+        for (; h < length && expression[h] == ' '; h++);
+
+        if (h < length) {
+            CSS_DestroyTreeExpression(treeExpression);
+            return NULL;
+        }
+
+        treeExpression->base   = 2;
+        treeExpression->offset = 0;
+        return treeExpression;
+    }
+
+    if (strstr(&expression[h], "odd") == &expression[h]) {
+        h += 3;
+
+        /* clean spaces */
+        for (; h < length && expression[h] == ' '; h++);
+
+        if (h < length) {
+            CSS_DestroyTreeExpression(treeExpression);
+            return NULL;
+        }
+
+        treeExpression->base   = 2;
+        treeExpression->offset = 1;
+        return treeExpression;
+    }
+
+    /* if the string ended it's 0 */
     if (i == length) {
         treeExpression->base   = 0;
         treeExpression->offset = 0;
         return treeExpression;
     }
 
-    // check that the next char is accepted
+    /* check that the next char is accepted */
     if (expression[i] != '+' && expression[i] != '-' && expression[i] != 'n' && !isdigit(expression[i])) {
-        free(treeExpression);
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
 
-    // check that there's a n
+    /* check that there's a n */
     for (h = i; h < length && expression[h] != 'n'; h++);
 
-    // set the right value
+    /* set the right value */
     if (h < length) {
-        // check that there are only digits between i and the n
+        /* check that there are only digits between i and the n */
         for (j = (expression[i] == '+' || expression[i] == '-') ? i+1 : i; j < h && isdigit(expression[j]); j++);
 
         if (j != h) {
-            free(treeExpression);
+            CSS_DestroyTreeExpression(treeExpression);
             return NULL;
         }
 
-        // if there's just a sign put 1 or -1
+        /* if there's just a sign put 1 or -1 */
         if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
                 treeExpression->base = 1;
@@ -81,7 +116,7 @@ CSS_ParseTreeExpression (const char* expression)
             }
         }
         else {
-            // if it's just n put 1, else convert the string
+            /* if it's just n put 1, else convert the string */
             treeExpression->base = (expression[i] == 'n')
                 ? 1
                 : atoi(&expression[i]);
@@ -94,44 +129,52 @@ CSS_ParseTreeExpression (const char* expression)
         treeExpression->base = 0;
     }
 
-    // clean spaces
+    /* clean spaces */
     while (i < length && expression[i] == ' ') i++;
 
-    // if the string ended the offset is 0, return the tree expression
+    /* if the string ended the offset is 0, return the tree expression */
     if (i == length) {
         treeExpression->offset = 0;
         return treeExpression;
     }
 
-    // if there's no + or - throw an error
+    /* if there's no + or - throw an error */
     if (expression[i] != '+' && expression[i] != '-') {
-        free(treeExpression);
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
 
+    /* check for positivness and jump the sign */
     positive = (expression[i] == '+') ? 1 : -1;
     i++; h = i;
 
-    // clean spaces
+    /* clean spaces */
     while (i < length && expression[i] == ' ') i++;
 
+    /* if the string ended or there's only the offset and there are spaces */
     if (i == length || (treeExpression->base == 0 && i != h)) {
-        free(treeExpression);
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
 
-    // check that the other chars are digits and could end with spaces
+    /* check that the other chars are digits and could end with spaces */
     for (h = i; h < length && isdigit(expression[h]); h++);
     for (; h < length && expression[h] == ' '; h++);
 
     if (h < length) {
-        free(treeExpression);
+        CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
 
     treeExpression->offset = positive * atoi(&expression[i]);
 
     return treeExpression;
+}
+
+void
+CSS_DestroyTreeExpression (CSSTreeExpression* expression)
+{
+    free(expression);
 }
 
 CSSPseudoClass*

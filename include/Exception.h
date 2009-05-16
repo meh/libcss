@@ -20,7 +20,7 @@
 #define _LIB_CSS_EXCEPTION_H
 
 static char *CSSExceptionText[] = {
-
+    "Something went wrong.\n"
 };
 
 /**

@@ -73,11 +73,11 @@ CSS_ParseSelector (const char* selector)
 int
 CSS_MatchSelector (const CSSSelector* selector, xmlNode* node)
 {
-    
+    return 0;
 }
 
 int
 CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
 {
-    
+    return 0;
 }

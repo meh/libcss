@@ -19,7 +19,7 @@ CFLAGS     = -D___VERSION___="\"${VERSION}\"" -I./include/ -I./src/
 LDFLAGS    = 
 
 ifdef DEBUG
-CFLAGS += -g3 -DWORKING -Wall
+CFLAGS += -g3 -DWORKING -Wall -pedantic
 endif
 
 ifdef DDEBUG

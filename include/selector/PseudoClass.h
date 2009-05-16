@@ -34,7 +34,21 @@ typedef struct _CSSTreeExpression {
     int offset; /**< is the b in the expression */
 } CSSTreeExpression;
 
+/**
+ * Parse a string to a CSSTreeExpression object.
+ *
+ * @param   expression  The string to parse.
+ *
+ * @return  The parsed CSSTreeExpression object.
+ */
 CSSTreeExpression* CSS_ParseTreeExpression (const char* expression);
+
+/**
+ * Destroy a CSSTreeExpression object.
+ *
+ * @param   expression  The object to destroy.
+ */
+void CSS_DestroyTreeExpression (CSSTreeExpression* expression);
 
 #define CSS_PSEUDOCLASS_IS_NORMAL(pseudoClass)  (pseudoClass->type == CSSNormalPseudoClass)
 #define CSS_PSEUDOCLASS_IS_TREE(pseudoClass)    (pseudoClass->type == CSSTreePseudoClass)
