@@ -61,16 +61,16 @@ CSS_ParseTreeExpression (const char* expression)
     // check that there's a n
     for (h = i; h < length && expression[h] != 'n'; h++);
 
-    // check that there are only digits between i and the n
-    for (j = (expression[i] == '+' || expression[i] == '-') ? i+1 : i; j < h && isdigit(expression[j]); j++);
-
-    if (j != h) {
-        free(treeExpression);
-        return NULL;
-    }
-
     // set the right value
     if (h < length) {
+        // check that there are only digits between i and the n
+        for (j = (expression[i] == '+' || expression[i] == '-') ? i+1 : i; j < h && isdigit(expression[j]); j++);
+
+        if (j != h) {
+            free(treeExpression);
+            return NULL;
+        }
+
         // if there's just a sign put 1 or -1
         if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
@@ -110,12 +110,12 @@ CSS_ParseTreeExpression (const char* expression)
     }
 
     positive = (expression[i] == '+') ? 1 : -1;
-    i++;
+    i++; h = i;
 
     // clean spaces
     while (i < length && expression[i] == ' ') i++;
 
-    if (i == length) {
+    if (i == length || (treeExpression->base == 0 && i != h)) {
         free(treeExpression);
         return NULL;
     }
