@@ -26,11 +26,21 @@ CSS_ParseTreeExpression (const char* expression)
 {
     CSSTreeExpression* treeExpression = (CSSTreeExpression*) malloc(sizeof(CSSTreeExpression));
 
-    size_t length = strlen(expression);
+    size_t length;
     size_t i;
     size_t h;
     size_t j;
     char   positive;
+
+    if (expression == NULL) {
+        return NULL;
+    }
+
+    length = strlen(expression);
+    
+    if (length == 0) {
+        return NULL;
+    }
     
     // clean spaces
     for (i = 0; i < length && expression[i] == ' '; i++);
@@ -60,7 +70,7 @@ CSS_ParseTreeExpression (const char* expression)
     }
 
     // set the right value
-    if (h < length) {
+    if (h > 1 && h < length) {
         // if there's just a sign put 1 or -1
         if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
@@ -104,6 +114,11 @@ CSS_ParseTreeExpression (const char* expression)
 
     // clean spaces
     while (i < length && expression[i] == ' ') i++;
+
+    if (i == length) {
+        free(treeExpression);
+        return NULL;
+    }
 
     // check that the other chars are digits and could end with spaces
     for (h = i; h < length && isdigit(expression[h]); h++);
