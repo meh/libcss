@@ -107,7 +107,7 @@ CSS_ParseTreeExpression (const char* expression)
         }
 
         /* if there's just a sign put 1 or -1 */
-        if (i+2 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
+        if (i+1 < length && (expression[i] == '+' || expression[i] == '-') && expression[i+1] == 'n') {
             if (expression[i] == '+') {
                 treeExpression->base = 1;
             }
