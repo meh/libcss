@@ -40,8 +40,8 @@ CSS_ParseTreeExpression (const char* expression)
     length = strlen(expression);
     
     if (length == 0) {
-        CSS_DestroyTreeExpression(treeExpression);
-        return NULL;
+        treeExpression->base   = 0;
+        treeExpression->offset = 0;
     }
     
     /* clean spaces */

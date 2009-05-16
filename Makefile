@@ -9,9 +9,11 @@ INST_HEADERSDIR = /usr/include/css
 
 DIR     			= src
 INCL				= include
+EXAM				= example
 FILES  			 	= ${DIR}/Document.o ${DIR}/Node.o ${DIR}/NodeList.o ${DIR}/Property.o ${DIR}/PropertyList.o ${DIR}/Exception.o ${DIR}/ExceptionList.o
 HEADERS     		= ${INCL}/api.h ${INCL}/Document.h ${INCL}/Node.h ${INCL}/NodeList.h ${INCL}/Property.h ${INCL}/PropertyList.h ${INCL}/Exception.h ${INCL}/ExceptionList.h
 SELECTOR_HEADERS 	= ${INCL}/selector/api.h ${INCL}/selector/Selector.h ${INCL}/selector/SimpleSelector.h ${INCL}/selector/Attribute.h ${INCL}/selector/PseudoClass.h
+EXAMPLES            = ${EXAM}/tree_expression
 
 CC         = gcc
 CXX		   = g++
@@ -68,5 +70,11 @@ uninstall:
 	
 clean:
 	rm -f ${LIB_NAME}
-	find src | egrep "\.l?o" | xargs rm -f
+	find src | egrep "\.l?o$$" | xargs rm -f
+	find example | egrep -v "(\.c|example)$$" | xargs rm -f
+
+examples: $(EXAMPLES)
+
+$(EXAMPLES):
+	${CC} -g3 $(shell css-config --cflags) $(shell css-config --libs) -o $@ $@.c
 
