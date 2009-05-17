@@ -40,31 +40,23 @@ CSS_DestroySelector (CSSSelector* selector)
 CSSSelector*
 CSS_ParseSelector (const char* selector)
 {
-    size_t i, offset;
-    size_t length   = strlen(selector);
-    int    inString = 0;
-    int    flag     = 0;
+    size_t       offset          = 0;
+    char*        tmp             = NULL;
+    char*        currentSelector = NULL;
+    char         ok              = 1;
+    CSSSelector* parsed          = CSS_NewSelector(NULL, 0);
 
-    CSSSimpleSelector source = {0, 0, NULL, NULL, NULL, NULL, NULL, NULL};
-    CSSSelector*      parsed = CSS_NewSelector(NULL, 0);
-
-    for (i = 0, offset = 0; i < length; i++) {
-        if (selector[i] == '.') {
-            flag = CSSClassSelector;
-        }
-        else if (selector[i] == '#') {
-            flag = CSSIDSelector;
-        }
-        else if (selector[i] == '[') {
-            flag = CSSAttributeSelector;
-        }
-        else if (selector[i] == '*') {
-            source.flags |= CSSUniversalSelector;
-        }
-        else {
-            
-        }
+    while (tmp = strchr(selector, ',') != NULL) {
+        parsed->length++;
+        parsed->item = (CSSSimpleSelector**) realloc(parsed->item, sizeof(CSSSimpleSelector*)*parse->length);
+        currentSelector = strndup(&selector[offset], (tmp-&selector[offset]));
+        parsed->item[parsed->length-1] = CSS_ParseSimpleSelector(currentSelector);
+        free(currentSelector); currentSelector = NULL;
     }
+
+    parsed->length++;
+    parsed->item = (CSSSimpleSelector**) realloc(parsed->item, sizeof(CSSSimpleSelector*)*parse->length);
+    parsed->item[parsed->length-1] = CSS_ParseSimpleSelector(&selector[offset]);
 
     return parsed;
 }

@@ -60,6 +60,7 @@ typedef enum {
 typedef struct _CSSSimpleSelector {
     int              flags;         /**< simple selector type */
     int              relation;      /**< relationship with the parent simple selector */
+    char*            namespace;     /**< selector namespace */
     char*            type;          /**< type value */
     CSSAttribute*    attribute;     /**< attribute value */
     char*            id;            /**< id name */
@@ -84,7 +85,7 @@ typedef struct _CSSSimpleSelector {
  *
  * @return  The new CSSSimpleSelector.
  */
-CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation,
+CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation, char* namespace,
     char*            type,
     CSSAttribute*    attribute,
     char*            id,
@@ -92,6 +93,8 @@ CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation,
     CSSPseudoClass** pseudoClass,
     char*            pseudoElement
 );
+
+CSSSimpleSelector* CSS_ParseSimpleSelector (const char* selector);
 
 /**
  * Destroy a CSSSimpleSelector object.

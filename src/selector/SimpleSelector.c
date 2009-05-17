@@ -20,11 +20,12 @@
 #include "common.h"
 
 CSSSimpleSelector*
-CSS_NewSimpleSelector (int flags, int relation, char* type, CSSAttribute* attribute, char* id, char* class, CSSPseudoClass** pseudoClass, char* pseudoElement)
+CSS_NewSimpleSelector (int flags, int relation, char* namespace, char* type, CSSAttribute* attribute, char* id, char* class, CSSPseudoClass** pseudoClass, char* pseudoElement)
 { 
     CSSSimpleSelector* selector = (CSSSimpleSelector*) malloc(sizeof(CSSSimpleSelector));
     selector->flags             = flags;
     selector->relation          = relation;
+    selector->namespace         = namespace;
     selector->type              = type;
     selector->attribute         = attribute;
     selector->id                = id;
@@ -33,6 +34,41 @@ CSS_NewSimpleSelector (int flags, int relation, char* type, CSSAttribute* attrib
     selector->pseudoElement     = pseudoElement;
 
     return selector;
+}
+
+CSSSimpleSelector*
+CSS_ParseSimpleSelector (const char* selector)
+{
+    size_t i;
+    size_t offset;
+    size_t length   = strlen(selector);
+    int    inString = 0;
+    int    flag     = 0;
+
+    CSSSimpleSelector* newSelector = CSS_NewSimpleSelector(0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    for (i = 0, offset = 0; i < length; i++) {
+        if (selector[i] == '.') {
+            parsed->flags |= CSSClassSelector;
+        }
+        else if (selector[i] == '#') {
+            parsed->flags |= CSSIDSelector;
+        }
+        else if (selector[i] == '[') {
+            parsed->flags |= CSSAttributeSelector;
+        }
+        else if (selector[i] == '*') {
+            parsed->flags |= CSSUniversalSelector;
+        }
+        else if (selector[i] == ':') {
+            
+        }
+        else if (strcmp(selector, "::") == 0) {
+
+        }
+    }
+
+    return parsed;
 }
 
 void

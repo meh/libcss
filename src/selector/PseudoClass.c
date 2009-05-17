@@ -141,12 +141,13 @@ CSS_ParseTreeExpression (const char* expression)
         return treeExpression;
     }
 
-    /* if there's no + or - throw an error */
+    /* if there's no + or - throw an error and there's a base */
     if ((expression[i] != '+' && expression[i] != '-') && !noBase) {
         CSS_DestroyTreeExpression(treeExpression);
         return NULL;
     }
     
+    /* check the signs */
     if (expression[i] == '+' || expression[i] == '-') {
         /* check for positivness and jump the sign */
         positive = (expression[i] == '+') ? 1 : -1;
@@ -200,7 +201,7 @@ CSS_DestroyPseudoClass (CSSPseudoClass* pseudoClass)
 
     if (pseudoClass->value) {
         if (CSS_PSEUDOCLASS_IS_TREE(pseudoClass)) {
-            free(pseudoClass->value);
+            CSS_DestroyTreeExpression(pseudoClass->value);
         }
         else if (CSS_PSEUDOCLASS_IS_NOT(pseudoClass)) {
             CSS_DestroySimpleSelector(pseudoClass->value);
