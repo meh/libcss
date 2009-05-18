@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "css/api.h"
+#include <css/api.h>
  
 int
 main (int argc, char* argv[])
@@ -7,7 +7,7 @@ main (int argc, char* argv[])
     CSSTreeExpression* expression;
  
     if (argc < 2) {
-        fprintf(stderr, "Expression is missing.\n");
+        fprintf(stderr, "The expression is missing.\n");
         return -1;
     }
  

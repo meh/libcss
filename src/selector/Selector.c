@@ -29,34 +29,100 @@ CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number)
     return newSelector;
 }
 
-void
-CSS_DestroySelector (CSSSelector* selector)
+CSSSimpleSelector*
+CSS_SetSelectorItem (CSSSelector* selector, CSSSimpleSelector* simpleSelector, int index)
 {
-    while (selector->length--) {
-        CSS_DestroySimpleSelector(selector->item[selector->length]);
+    CSSSimpleSelector* result;
+
+    if (index > selector->length-1) {
+        return NULL;
+    }
+
+    result                = selector->item[index];
+    selector->item[index] = simpleSelector;
+
+    return result;
+}
+
+inline
+CSSSimpleSelector*
+CSS_GetSelectorItem (CSSSelector* selector, int index)
+{
+    if (index > selector->length-1) {
+        return NULL;
+    }
+
+    return selector->item[index];
+}
+
+void
+CSS_SetSelectorLength (CSSSelector* selector, int length)
+{
+    int oldLength;
+    int i;
+
+    if (length < 0) {
+        return;
+    }
+
+    oldLength = selector->length;
+
+    if (length < selector->length) {
+        while (length != selector->length--) {
+            CSS_DestroySimpleSelector(selector->item[selector->length]);
+        }
+    }
+    else {
+        selector->length = length;
+    }
+
+    selector->item = (CSSSimpleSelector**) realloc(selector->item, sizeof(CSSSimpleSelector*)*length);
+
+    if (oldLength < selector->length) {
+        for (i = oldLength; i < selector->length; i++) {
+            selector->item[i] = NULL;
+        }
     }
 }
 
-CSSSelector*
-CSS_ParseSelector (const char* selector)
+inline
+int
+CSS_GetSelectorLength (CSSSelector* selector)
 {
-    size_t       offset          = 0;
-    char*        tmp             = NULL;
-    char*        currentSelector = NULL;
-    char         ok              = 1;
-    CSSSelector* parsed          = CSS_NewSelector(NULL, 0);
+    return selector->length;
+}
 
-    while (tmp = strchr(selector, ',') != NULL) {
-        parsed->length++;
-        parsed->item = (CSSSimpleSelector**) realloc(parsed->item, sizeof(CSSSimpleSelector*)*parse->length);
-        currentSelector = strndup(&selector[offset], (tmp-&selector[offset]));
-        parsed->item[parsed->length-1] = CSS_ParseSimpleSelector(currentSelector);
-        free(currentSelector); currentSelector = NULL;
+void
+CSS_AddSimpleSelector (CSSSelector* selector, CSSSimpleSelector* simpleSelector)
+{
+    CSS_SetSelectorLength(selector, CSS_GetSelectorLength(parsed)+1);
+    CSS_SetSelectorItem(selector, simpleSelector, CSS_GetSelectorLength(parsed)-1);
+}
+
+CSSSelector*
+CSS_ParseSelector (const char* selector, CSSExceptionList* exceptions)
+{
+    size_t             offset  = 0;
+    char*              tmp     = NULL;
+    char*              current = NULL;
+    CSSSelector*       parsed  = CSS_NewSelector(NULL, 0);
+    CSSSimpleSelector* simple  = NULL;
+
+    while ((tmp = strchr(selector, ',')) != NULL) {
+        current = strndup(&selector[offset], (tmp-&selector[offset]));
+        simple = CSS_ParseSimpleSelector(current);
+
+        if (simple == NULL) {
+            CSS_DestroySelector(parsed);
+            free(current);
+            return NULL;
+        }
+
+        CSS_AddSimpleSelector(parsed, CSS_ParseSimpleSelector(current));
+        free(current); current = NULL;
     }
 
-    parsed->length++;
-    parsed->item = (CSSSimpleSelector**) realloc(parsed->item, sizeof(CSSSimpleSelector*)*parse->length);
-    parsed->item[parsed->length-1] = CSS_ParseSimpleSelector(&selector[offset]);
+    CSS_AddSimpleSelector(parsed, CSS_ParseSimpleSelector(&selector[offset]));
 
     return parsed;
 }
@@ -73,3 +139,12 @@ CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
 {
     return 0;
 }
+
+void
+CSS_DestroySelector (CSSSelector* selector)
+{
+    while (selector->length--) {
+        CSS_DestroySimpleSelector(selector->item[selector->length]);
+    }
+}
+

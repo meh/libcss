@@ -46,20 +46,60 @@ typedef struct _CSSSelector {
 CSSSelector* CSS_NewSelector (CSSSimpleSelector** selectors, unsigned number);
 
 /**
- * Destroy a CSSSelector object.
+ * Assign a CSSSimpleSelector at the given index.
  *
- * @param   selector    The object to destroy.
+ * If there's already a CSSSimpleSelector at the given index it's returned,
+ * so you have to take reed of the returned object.
+ *
+ * @param   selector        The CSSSelector object.
+ * @param   simpleSelector  The CSSSimpleSelector to assign.
+ * @param   index           The index where to put it.
+ *
+ * @return  The replaced CSSSimpleSelector if it exists.
  */
-void CSS_DestroySelector (CSSSelector* selector);
+CSSSimpleSelector* CSS_SetSelectorItem (CSSSelector* selector, CSSSimpleSelector* simpleSelector, int index);
+
+/**
+ * Get the CSSSimpleSelector at the given index
+ *
+ * @param   selector    The CSSSelector object.
+ * @param   index       The index where to get it.
+ *
+ * @return  The CSSSimpleSelector at the given index.
+ */
+CSSSimpleSelector* CSS_GetSelectorItem (CSSSelector* selector, int index);
+
+/**
+ * Set the selector length.
+ *
+ * If the length is less than the actual length the overflowing
+ * CSSSimpleSelectors are destroyed.
+ *
+ * @param   selector    The CSSSelector object.
+ * @param   length      The new length.
+ */
+void CSS_SetSelectorLength (CSSSelector* selector, int length);
+
+/**
+ * Get the selector length.
+ *
+ * @param   selector    The CSSSelector object.
+ */
+int CSS_GetSelectorLength (CSSSelector* selector);
+
+void CSS_AddSimpleSelector (CSSSelector* selector, CSSSimpleSelector* simpleSelector);
 
 /**
  * Parse a string to a CSSSelector.
  *
  * @param   selector    The string.
+ * @param   exceptions  CSSExceptionList where the exceptions will be stored.
+ *                      Pass NULL if you don't want exceptions to be stored.
+ *                      At the moment exceptions aren't implemented.
  *
  * @return  The CSSSelector or NULL on error.
  */
-CSSSelector* CSS_ParseSelector (const char* selector);
+CSSSelector* CSS_ParseSelector (const char* selector, CSSExceptionList* exceptions);
 
 /**
  * Match a selector against a xml node.
@@ -80,5 +120,12 @@ int CSS_MatchSelector (const CSSSelector* selector, xmlNode* node);
  * @return  1 if it matches, 0 otherwise.
  */
 int CSS_MatchSelectorFromString (const char* selector, xmlNode* node);
+
+/**
+ * Destroy a CSSSelector object.
+ *
+ * @param   selector    The object to destroy.
+ */
+void CSS_DestroySelector (CSSSelector* selector);
 
 #endif

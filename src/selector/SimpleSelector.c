@@ -43,9 +43,8 @@ CSS_ParseSimpleSelector (const char* selector)
     size_t offset;
     size_t length   = strlen(selector);
     int    inString = 0;
-    int    flag     = 0;
 
-    CSSSimpleSelector* newSelector = CSS_NewSimpleSelector(0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    CSSSimpleSelector* parsed = CSS_NewSimpleSelector(0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     for (i = 0, offset = 0; i < length; i++) {
         if (selector[i] == '.') {
