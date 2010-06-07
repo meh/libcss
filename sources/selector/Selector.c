@@ -95,31 +95,51 @@ CSS_GetSelectorLength (CSSSelector* selector)
 void
 CSS_AddSimpleSelector (CSSSelector* selector, CSSSimpleSelector* simpleSelector)
 {
-    CSS_SetSelectorLength(selector, CSS_GetSelectorLength(parsed)+1);
-    CSS_SetSelectorItem(selector, simpleSelector, CSS_GetSelectorLength(parsed)-1);
+    int length = CSS_GetSelectorLength(selector);
+
+    CSS_SetSelectorLength(selector, length+1);
+    CSS_SetSelectorItem(selector, simpleSelector, length);
 }
 
 CSSSelector*
 CSS_ParseSelector (const char* selector, CSSExceptionList* exceptions)
 {
-    size_t             offset  = 0;
-    char*              tmp     = NULL;
-    char*              current = NULL;
-    CSSSelector*       parsed  = CSS_NewSelector(NULL, 0);
-    CSSSimpleSelector* simple  = NULL;
+    char               inString   = 0;
+    char               stringType = 0;
+    size_t             offset     = 0;
+    char*              tmp        = NULL;
+    char*              current    = NULL;
+    CSSSelector*       parsed     = CSS_NewSelector(NULL, 0);
+    CSSSimpleSelector* simple     = NULL;
 
-    while ((tmp = strchr(selector, ',')) != NULL) {
-        current = strndup(&selector[offset], (tmp-&selector[offset]));
-        simple = CSS_ParseSimpleSelector(current);
+    size_t length = strlen(selector);
+    size_t i;
+    for (i = 0; i < length; i++) {
+        if (selector[i] == ',' && !inString) {
+            current = strndup(&selector[offset], (&selector[i])-(&selector[offset]));
+            simple = CSS_ParseSimpleSelector(current);
 
-        if (simple == NULL) {
-            CSS_DestroySelector(parsed);
-            free(current);
-            return NULL;
+            if (simple == NULL) {
+                CSS_DestroySelector(parsed);
+                free(current);
+                return NULL;
+            }
+
+            CSS_AddSimpleSelector(parsed, CSS_ParseSimpleSelector(current));
+            free(current); current = NULL;
+            offset = i;
         }
-
-        CSS_AddSimpleSelector(parsed, CSS_ParseSimpleSelector(current));
-        free(current); current = NULL;
+        else if (selector[i] == '"' || selector[i] == '\'') {
+            if (!inString) {
+                stringType = selector[i];
+                inString   = 1;
+            }
+            else {
+                if (selector[i-1] != '\\' && selector[i] == stringType) {
+                    inString = 0;
+                }
+            }
+        }
     }
 
     CSS_AddSimpleSelector(parsed, CSS_ParseSimpleSelector(&selector[offset]));

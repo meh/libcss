@@ -4,6 +4,6 @@ Library used in lal.
 
 Sadly I'll have to work on this first :(
 
-If you want to compile Selectors too you need the libxml2 library and pass SELECTOR=1 to the make command.
+If you want to compile Selectors too you need the libxml2 library and pass SELECTOR as env var to the rake command.
 
 Got an awesome idea to work with XML files.

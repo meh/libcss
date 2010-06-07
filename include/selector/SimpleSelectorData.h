@@ -17,52 +17,29 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIBCSS_SELECTOR_ATTRIBUTE_H
-#define _LIBCSS_SELECTOR_ATTRIBUTE_H
+#ifndef _LIBCSS_SELECTOR_SIMPLESELECTORDATA_H
+#define _LIBCSS_SELECTOR_SIMPLESELECTORDATA_H
 
-/**
- * CSSAttribute types.
- */
-typedef enum {
-    CSSAttributePresent    = 0x01, /**< [att] */
-    CSSAttributeExactly    = 0x02, /**< [att=val] */
-    CSSAttributeIn         = 0x04, /**< [att~=val] */
-    CSSAttributeStartsWith = 0x08, /**< [att^=val] */
-    CSSAttributeEndsWith   = 0x16, /**< [att$=val] */
-    CSSAttributeContains   = 0x32, /**< [att*=val] */
-    CSSAttributeBeginsWith = 0x64  /**< [att|=val] */
-} CSSAttributeType;
+#include "Attribute.h"
 
-/**
- * Structure that represents a CSSAttributeSelector.
- */
-typedef struct _CSSAttribute {
-    int     type;  /**< attribute's type */
-    char*   name;  /**< attribute's name */
-    char*   value; /**< attribute's value */
-} CSSAttribute;
+typedef struct _CSSSimpleSelectorData {
+    char*            type;          /*<< Value of the type (eg. panel). */
+    CSSAttribute*    attribute;     /*<< Value of the attribute (eg. [width=34px]). */
+    char*            id;            /*<< */
+    char*            klass;         /*<< Value of the class (eg. .black). */
+    CSSPseudoClass** pseudoClass;   /*<< Value of the pseudoClass (eg. button:hover). */
+    char*            pseudoElement; /*<< Value of the pseudoElement (eg. textarea:first-line). */
+} CSSSimpleSelectorData;
 
-/**
- * Create a CSSAttribute object.
- *
- * The name and value won't be copied, just assigned (so you have to *alloc them)
- * it's your job to prevent the deletetion of those strings.
- *
- * @param   type    The attribute type.
- * @param   name    The attribute name.
- * @param   value   The attribute value.
- *
- * @return  The new CSSAttribute object.
- */
-CSSAttribute* CSS_NewAttribute (int type, char* name, char* value);
+CSSSimpleSelectorData* CSS_NewSimpleSelectorData (
+    char*            type,
+    CSSAttribute*    attribute,
+    char*            id,
+    char*            klass,
+    CSSPseudoClass** pseudoClass,
+    char*            pseudoElement
+);
 
-/**
- * Destroy a CSSAttribute object.
- *
- * The name and value that were passed will be free'd.
- *
- * @param   attribute   The object to destroy.
- */
-void CSS_DestroyAttribute (CSSAttribute* attribute);
+void CSS_DestroySimpleSelectorData (CSSSimpleSelectorData* data);
 
 #endif

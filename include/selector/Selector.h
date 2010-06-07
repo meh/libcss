@@ -25,6 +25,7 @@
 #error  "Your libxml2 hasn't tree support."
 #endif
 
+#include "ExceptionList.h"
 #include "SimpleSelector.h"
 
 /**

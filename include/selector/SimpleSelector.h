@@ -1,5 +1,6 @@
 /****************************************************************************
 * This file is part of libcss                                               *
+*                                                                           *
 * Copyleft meh. [http://meh.doesntexist.org | meh.ffff@gmail.com]           *
 *                                                                           *
 * lal is free software: you can redistribute it and/or modify               *
@@ -16,10 +17,10 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_SELECTOR_SIMPLESELECTOR_H
-#define _LIB_CSS_SELECTOR_SIMPLESELECTOR_H
+#ifndef _LIBCSS_SELECTOR_SIMPLESELECTOR_H
+#define _LIBCSS_SELECTOR_SIMPLESELECTOR_H
 
-#include "Attribute.h"
+#include "SimpleSelectorData.h"
 #include "PseudoClass.h"
 
 /**
@@ -58,15 +59,10 @@ typedef enum {
  * (see http://www.w3.org/TR/CSS2/selector.html#selector-syntax)
  */
 typedef struct _CSSSimpleSelector {
-    int              flags;         /**< simple selector type */
-    int              relation;      /**< relationship with the parent simple selector */
-    char*            namespace;     /**< selector namespace */
-    char*            type;          /**< type value */
-    CSSAttribute*    attribute;     /**< attribute value */
-    char*            id;            /**< id name */
-    char*            class;         /**< class name */
-    CSSPseudoClass** pseudoClass;   /**< pseudo class name */
-    char*            pseudoElement; /**< pseudo element name */
+    int                    flags;    /**< simple selector type */
+    int                    relation; /**< relationship with the parent simple selector */
+    char*                  nspace;   /**< selector namespace */
+    CSSSimpleSelectorData* data;     /**< selector data */
 } CSSSimpleSelector;
 
 /**
@@ -77,22 +73,12 @@ typedef struct _CSSSimpleSelector {
  *
  * @param   flags           Types present in the simple selector in a bitwise manner.
  * @param   relation        Relationship with the previous simple selector.
- * @param   type            Value of the type (eg. panel).
- * @param   attribute       Value of the attribute (eg. [width=34px]).
- * @param   class           Value of the class (eg. .black).
- * @param   pseudoClass     Value of the pseudoClass (eg. button:hover).
- * @param   pseudoElement   Value of the pseudoElement (eg. textarea:first-line).
+ * @param   nspace          The namespace.
+ * @param   data            Simple selector data.
  *
  * @return  The new CSSSimpleSelector.
  */
-CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation, char* namespace,
-    char*            type,
-    CSSAttribute*    attribute,
-    char*            id,
-    char*            class,
-    CSSPseudoClass** pseudoClass,
-    char*            pseudoElement
-);
+CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation, char* nspace, CSSSimpleSelectorData* data);
 
 CSSSimpleSelector* CSS_ParseSimpleSelector (const char* selector);
 
