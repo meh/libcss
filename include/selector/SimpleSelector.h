@@ -21,6 +21,7 @@
 #define _LIBCSS_SELECTOR_SIMPLESELECTOR_H
 
 #include "SimpleSelectorData.h"
+#include "Attribute.h"
 #include "PseudoClass.h"
 
 /**
@@ -59,11 +60,37 @@ typedef enum {
  * (see http://www.w3.org/TR/CSS2/selector.html#selector-syntax)
  */
 typedef struct _CSSSimpleSelector {
-    int                    flags;    /**< simple selector type */
-    int                    relation; /**< relationship with the parent simple selector */
-    char*                  nspace;   /**< selector namespace */
-    CSSSimpleSelectorData* data;     /**< selector data */
+    int              flags;         /**< simple selector type */
+    int              relation;      /**< relationship with the parent simple selector */
+    char*            nspace;        /**< selector namespace */
+    char*            type;          /*<< Value of the type (eg. panel). */
+    CSSAttribute*    attribute;     /*<< Value of the attribute (eg. [width=34px]). */
+    char*            id;            /*<< */
+    char*            klass;         /*<< Value of the class (eg. .black). */
+    CSSPseudoClass** pseudoClass;   /*<< Value of the pseudoClass (eg. button:hover). */
+    char*            pseudoElement; /*<< Value of the pseudoElement (eg. textarea:first-line). */
 } CSSSimpleSelector;
+
+/**
+ * Create a CSSSimpleSelector object.
+ *
+ * All the values have to be *alloc'd by you because the pointers will be
+ * copied as they are.
+ *
+ * @param   flags           Types present in the simple selector in a bitwise manner.
+ * @param   relation        Relationship with the previous simple selector.
+ * @param   nspace          The namespace.
+ *
+ * @return  The new CSSSimpleSelector.
+ */
+CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation, char* nspace,
+    char*            type,
+    CSSAttribute*    attribute,
+    char*            id,
+    char*            klass,
+    CSSPseudoClass** pseudoClass,
+    char*            pseudoElement
+);
 
 /**
  * Create a CSSSimpleSelector object.
@@ -78,7 +105,8 @@ typedef struct _CSSSimpleSelector {
  *
  * @return  The new CSSSimpleSelector.
  */
-CSSSimpleSelector* CSS_NewSimpleSelector (int flags, int relation, char* nspace, CSSSimpleSelectorData* data);
+CSSSimpleSelector* CSS_NewSimpleSelectorFromData (int flags, int relation, char* nspace, CSSSimpleSelectorData* data);
+
 
 CSSSimpleSelector* CSS_ParseSimpleSelector (const char* selector);
 

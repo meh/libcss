@@ -20,6 +20,7 @@
 #ifndef _LIBCSS_SELECTOR_SIMPLESELECTORDATA_H
 #define _LIBCSS_SELECTOR_SIMPLESELECTORDATA_H
 
+#include "PseudoClass.h"
 #include "Attribute.h"
 
 typedef struct _CSSSimpleSelectorData {

@@ -16,16 +16,14 @@ if ENV['DEBUG']
     OPTIONS << ' -g3'
 end
 
-CFLAGS  = "#{OPTIONS} #{`pcre-config --cflags`.strip} -Iinclude"
+CFLAGS  = "#{OPTIONS} #{`pcre-config --cflags`.strip} -Iinclude -Isources"
 LDFLAGS = "#{`nspr-config --libs`.strip} #{`pcre-config --libs`.strip}"
 
 SOURCES = FileList['sources/**/*.c']
 
-if ENV['SELECTOR']
-    CFLAGS  << " #{`xml2-config --cflags`.strip}"
+if ENV['XML2']
+    CFLAGS  << " #{`xml2-config --cflags`.strip} -DWITH_XML"
     LDFLAGS << " #{`xml2-config --libs`.strip}"
-else
-    SOURCES.exclude('sources/selector/**')
 end
 
 OBJECTS = SOURCES.ext('o')

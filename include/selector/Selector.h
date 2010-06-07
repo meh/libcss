@@ -20,10 +20,12 @@
 #ifndef _LIBCSS_SELECTOR_H
 #define _LIBCSS_SELECTOR_H
 
+#ifdef WITH_XML
 #include "libxml/tree.h"
 
 #ifndef LIBXML_TREE_ENABLED
 #error  "Your libxml2 hasn't tree support."
+#endif
 #endif
 
 #include "ExceptionList.h"
@@ -103,6 +105,8 @@ void CSS_AddSimpleSelector (CSSSelector* selector, CSSSimpleSelector* simpleSele
  */
 CSSSelector* CSS_ParseSelector (const char* selector, CSSExceptionList* exceptions);
 
+#ifdef WITH_XML
+
 /**
  * Match a selector against a xml node.
  *
@@ -122,6 +126,8 @@ int CSS_MatchSelector (const CSSSelector* selector, xmlNode* node);
  * @return  1 if it matches, 0 otherwise.
  */
 int CSS_MatchSelectorFromString (const char* selector, xmlNode* node);
+
+#endif
 
 /**
  * Destroy a CSSSelector object.

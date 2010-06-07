@@ -148,6 +148,7 @@ CSS_ParseSelector (const char* selector, CSSExceptionList* exceptions)
     return parsed;
 }
 
+#ifdef WITH_XML
 
 int
 CSS_MatchSelector (const CSSSelector* selector, xmlNode* node)
@@ -160,6 +161,8 @@ CSS_MatchSelectorFromString (const char* selector, xmlNode* node)
 {
     return 0;
 }
+
+#endif
 
 void
 CSS_DestroySelector (CSSSelector* selector)

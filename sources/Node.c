@@ -18,10 +18,11 @@
 ****************************************************************************/
 
 #include "Node.h"
+#include "selector/api.h"
 #include "common.h"
 
 CSSNode*
-CSS_NewNode (CSS_SELECTOR_TYPE** selectors, unsigned number, CSSPropertyList* properties)
+CSS_NewNode (CSSSelector** selectors, unsigned number, CSSPropertyList* properties)
 {
     CSSNode* node        = (CSSNode*) malloc(sizeof(CSSNode));
     node->selector       = selectors;

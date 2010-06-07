@@ -21,4 +21,15 @@
 #include "common.h"
 
 CSSSimpleSelectorData*
-CSS_NewSimpleSelectorData 
+CSS_NewSimpleSelectorData (
+    char*            type,
+    CSSAttribute*    attribute,
+    char*            id,
+    char*            klass,
+    CSSPseudoClass** pseudoClass,
+    char*            pseudoElement
+)
+{
+    return NULL;
+}
+

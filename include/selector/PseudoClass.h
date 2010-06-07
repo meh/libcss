@@ -23,7 +23,7 @@
 /**
  * This structure represents a tree expression (an+b) in the CSSTreePseudoClass.
  *
- * When a is negative only the positive offset is used, this is usefull to get
+ * When a is negative only the positive offset is used, this is useful to get
  * the first b elements.
  *
  * When b is negative it gets the element starting from the end of the base group.

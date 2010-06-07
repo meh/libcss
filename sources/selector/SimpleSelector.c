@@ -21,13 +21,19 @@
 #include "common.h"
 
 CSSSimpleSelector*
-CSS_NewSimpleSelector (int flags, int relation, char* nspace, CSSSimpleSelectorData* data)
+CSS_NewSimpleSelector (int flags, int relation, char* nspace, 
+    char*            type,
+    CSSAttribute*    attribute,
+    char*            id,
+    char*            klass,
+    CSSPseudoClass** pseudoClass,
+    char*            pseudoElement
+)
 { 
     CSSSimpleSelector* selector = (CSSSimpleSelector*) malloc(sizeof(CSSSimpleSelector));
     selector->flags    = flags;
     selector->relation = relation;
     selector->nspace   = nspace;
-    selector->data     = data;
 
     return selector;
 }
@@ -40,7 +46,7 @@ CSS_ParseSimpleSelector (const char* selector)
     size_t length   = strlen(selector);
     int    inString = 0;
 
-    CSSSimpleSelector* parsed = CSS_NewSimpleSelector(0, 0, NULL, NULL);
+    CSSSimpleSelector* parsed = CSS_NewSimpleSelectorFromData(0, 0, NULL, NULL);
 
     for (i = 0, offset = 0; i < length; i++) {
         if (selector[i] == '.') {
@@ -81,8 +87,8 @@ CSS_DestroySimpleSelector (CSSSimpleSelector* selector)
         free(selector->id);
     }
 
-    if (selector->class) {
-        free(selector->class);
+    if (selector->klass) {
+        free(selector->klass);
     }
 
     if (selector->pseudoClass) {

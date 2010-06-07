@@ -21,22 +21,15 @@
 #define _LIBCSS_NODE_H
 
 #include "PropertyList.h"
-
-#ifdef  CSS_SELECTOR
 #include "selector/Selector.h"
-
-#define CSS_SELECTOR_TYPE CSSSelector
-#else
-#define CSS_SELECTOR_TYPE char
-#endif
 
 /**
  * Structure that represents a CSS node (a new selectors properties)
  */
 typedef struct _CSSNode {
-    CSS_SELECTOR_TYPE** selector;       /**< Selectors array */
-    unsigned            selectorNumber; /**< Number of selectors */
-    CSSPropertyList*    properties;     /**< Selectors' properties */
+    CSSSelector**     selector;       /**< Selectors array */
+    unsigned          selectorNumber; /**< Number of selectors */
+    CSSPropertyList*  properties;     /**< Selectors' properties */
 } CSSNode;
 
 /**
@@ -49,7 +42,7 @@ typedef struct _CSSNode {
  * @return  A new CSSNode object.
  */
 
-CSSNode* CSS_NewNode (CSS_SELECTOR_TYPE** selectors, unsigned number, CSSPropertyList* properties);
+CSSNode* CSS_NewNode (CSSSelector** selectors, unsigned number, CSSPropertyList* properties);
 
 /**
  * Destroy a CSSNode object.
