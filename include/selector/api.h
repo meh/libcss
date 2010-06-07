@@ -1,8 +1,9 @@
 /****************************************************************************
-* This file is part of libcss                                               *
 * Copyleft meh. [http://meh.doesntexist.org | meh.ffff@gmail.com]           *
 *                                                                           *
-* lal is free software: you can redistribute it and/or modify               *
+* This file is part of libcss                                               *
+*                                                                           *
+* libcss is free software: you can redistribute it and/or modify            *
 * it under the terms of the GNU General Public License as published by      *
 * the Free Software Foundation, either version 3 of the License, or         *
 * (at your option) any later version.                                       *
@@ -16,8 +17,8 @@
 * along with libcss.  If not, see <http://www.gnu.org/licenses/>.           *
 ****************************************************************************/
 
-#ifndef _LIB_CSS_SELECTOR_API_H
-#define _LIB_CSS_SELECTOR_API_H
+#ifndef _LIBCSS_SELECTOR_API_H
+#define _LIBCSS_SELECTOR_API_H
 
 #include "PseudoClass.h"
 #include "Attribute.h"

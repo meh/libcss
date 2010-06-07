@@ -30,7 +30,7 @@ end
 
 OBJECTS = SOURCES.ext('o')
 
-CLEAN.include(OBJECTS)
+CLEAN.include(FileList['sources/**/*.o'])
 CLOBBER.include(library(NAME))
 
 task :default => library(NAME)

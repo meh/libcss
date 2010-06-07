@@ -14,13 +14,13 @@ main (int argc, char* argv[])
 
     selector = CSS_ParseSelector(argv[1], exceptions);
 
-    if (expression == NULL) {
+    if (selector == NULL) {
         fprintf(stderr, "The selector was invalid.\n");
         return -1;
     }
     else {
-        printf("Base:\t%d\n", expression->base);
-        printf("Offset:\t%d\n", expression->offset);
+        printf("Base:\t%d\n", selector->base);
+        printf("Offset:\t%d\n", selector->offset);
     }
 
     CSS_DestroySelector(selector);
